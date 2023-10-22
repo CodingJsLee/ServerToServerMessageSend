@@ -42,13 +42,26 @@ public class Display {
             }
 
             if("1".equals(str)) {
-                // 메시지 입력
-                try {
-                    input = this.inputMessage();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                while(true) {
+                    // 메시지 입력
+                    try {
+
+                        input = this.inputMessage();
+                        // controller send
+                        returnValue= mc.messageInsert(input);
+
+                        if ((int) returnValue.get("ResultValue") == 2) {
+                            System.out.println("메시지 길이가 [254] byte를 초과하였습니다. 메시지 길이 : " + returnValue.get("MessageLength"));
+                            System.out.println("다시 입력하세요.");
+                        } else {
+                            break;
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                mc.messageInsert(input);
+
             }
 
         }
